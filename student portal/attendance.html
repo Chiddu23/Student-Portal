@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8" />
+    <title>Attendance</title>
+    <style>
+        /* #myForm {
+            text-align: center;
+            display: flex;
+            justify-content: center;
+            width: 80vw;
+            height: 300px;
+            padding: 20px;
+        } */
+        #mytab{
+            height: 90%;
+            width: 100%;
+            position:sticky;
+        }
+        .center{
+            margin-left: auto;
+            margin-right: auto;
+        }
+        .topnav {
+            background-color: #64af39;
+            overflow: hidden;
+        }
+
+            /* Style the links inside the navigation bar */
+        .topnav a {
+            float: left;
+            color: #f2f2f2;
+            text-align: center;
+            padding: 14px 16px;
+            text-decoration: none;
+            font-size: 17px;
+        }
+        .topnav a.img {
+            float: right;
+            color: #f2f2f2;
+            text-align: center;
+            text-decoration: none;
+            padding: 0px 0px;
+        }
+
+            /* Change the color of links on hover */
+        .topnav a:hover {
+            background-color: #de7a3c;
+            color: black;
+        }
+
+            /* Add a color to the active/current link */
+        .topnav a.active {
+            background-color: #4dd3da;
+            color: white;
+        }
+        h3{
+            text-align: center;
+        }
+    </style>
+</head>
+<body>
+    <div class="topnav">
+        <a href="#" class="img"><img src="profilepic.jpg" width="45" height="45"></a>
+        <a class="#" href="profile.html">PROFILE</a>
+        <a href="timetable.html">TIME TABLE</a>
+        <a href="attendance.html" class="active">ATTENDANCE</a>
+        <a href="calender.html">CALENDER</a>
+        
+    </div>
+    <h3>Day  :<p id="day"></p></h3>
+    <h3>Date :<p id="date"></p></h3>
+    <form id="myForm">
+        <table id="mytab" border="2"></table>
+    </form>
+    <script>
+        let monday=["CDC","ML Theory-1","ML Theory-2"];
+        let tuesday=["SE Lab-1","SE Lab-2","CDC","Web Programming"];
+        let wednesday=["CDC","Web Programming Theory-1","Web Programming Theory-2"];
+        let thursday=["SE","ML Theory"];
+        let friday=["SE Theory-1","SE Theory-2","ML Lab-1","ML Lab-2"];
+        const date = new Date();
+
+        const dayOfWeek = date.toLocaleString('en-us', {weekday: 'long'});
+
+        const dayOfMonth = date.getDate().toString().padStart(2, '0');
+        const month = (date.getMonth() + 1).toString().padStart(2, '0');
+        const year = date.getFullYear();
+
+        const formattedDate = `${dayOfMonth}-${month}-${year}`;
+        document.getElementById("day").innerHTML=dayOfWeek;
+        document.getElementById("date").innerHTML=formattedDate;
+
+
+        function gen_table(day){
+            var table=document.getElementById("mytab");
+            for(var i=0;i<day.length;i++){
+                var row=table.insertRow();
+                var cell=row.insertCell();
+                cell.innerHTML=day[i];
+
+                // Create the first radio button element
+                var radio1 = document.createElement('input');
+                radio1.type = 'radio';
+                radio1.name = day[i];
+                radio1.value = 'Yes';
+
+                // Create the second radio button element
+                var radio2 = document.createElement('input');
+                radio2.type = 'radio';
+                radio2.name = day[i];
+                radio2.value = 'No';
+
+                // Create a new table cell element and append the radio button elements to it
+                var cell = document.createElement('td');
+                cell.appendChild(radio1);
+                cell.appendChild(document.createTextNode('Yes'));
+                cell.appendChild(radio2);
+                cell.appendChild(document.createTextNode('No'));
+
+                // Create a new table row element and append the cell element to it
+                // var row = document.createElement('tr');
+                row.appendChild(cell);
+
+                // Append the row element to the table
+                // table.appendChild(row);
+
+
+
+            }
+                // Get a reference to the form element
+                var form = document.getElementById('mytab');
+                var row=form.insertRow();
+                // Create a new reset button element
+                var resetButton = document.createElement('input');
+                resetButton.type = 'reset';
+                resetButton.value = 'Reset';
+                // Create a new Submit button element
+                var submitButton = document.createElement('input');
+                submitButton.type = 'submit';
+                submitButton.value = 'Submit';
+
+                var cell = document.createElement('td');
+                cell.appendChild(submitButton);
+                row.appendChild(cell);
+                var cell = document.createElement('td');
+                cell.appendChild(resetButton);
+                row.appendChild(cell);
+
+
+        }
+        
+        
+
+        if(dayOfWeek=="Saturday")
+        gen_table(monday);
+
+
+    </script>
+</body>
+</html>

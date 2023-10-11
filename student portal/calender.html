@@ -1,0 +1,214 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8" />
+    <title>CALENDER</title>
+    <style>
+        /* CSS CODE */
+        .calendar {
+        font-family: Arial, sans-serif;
+        border: 1px solid #ccc;
+        border-radius: 15px;
+        width:500px;
+        padding: 10px;
+        background-color: #4dd3da;
+        color: #B45D0B;
+        }
+        .even {
+          background-color: lightblue;
+        }
+
+        .odd {
+          background-color: lightgreen;
+        }
+        .holiday {
+          background-color: red;
+          color: white;
+        }
+
+        .header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        }
+
+        .prev, .next {
+        background-color: transparent;
+        border: none;
+        cursor: pointer;
+        font-size: 20px;
+        outline: none;
+        }
+
+        .weekdays {
+        display: flex;
+        justify-content: space-between;
+        margin-top: 10px;
+        font-weight: bold;
+        }
+
+        .days {
+        display: flex;
+        flex-wrap: wrap;
+        margin-top: 10px;
+        }
+
+        .days > div {
+        border: 1px solid black;
+        border-radius: 5px;
+        width: calc(100% / 7 - 2px);
+        height: 40px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        }
+
+        .days > div.today {
+        background-color: #f2f2f2;
+        }
+
+        .days > div:not(.today):hover {
+        background-color: #f2f2f2;
+        cursor: pointer;
+        }
+            .topnav {
+                background-color: #64af39;
+                overflow: hidden;
+            }
+
+                /* Style the links inside the navigation bar */
+            .topnav a {
+                float: left;
+                color: #f2f2f2;
+                text-align: center;
+                padding: 14px 16px;
+                text-decoration: none;
+                font-size: 17px;
+            }
+            .topnav a.img {
+                float: right;
+                color: #f2f2f2;
+                text-align: center;
+                text-decoration: none;
+                padding: 0px 0px;
+            }
+
+                /* Change the color of links on hover */
+            .topnav a:hover {
+                background-color: #de7a3c;
+                color: black;
+            }
+
+                /* Add a color to the active/current link */
+            .topnav a.active {
+                background-color: #4dd3da;
+                color: white;
+            }
+	</style>
+</head>
+<body>
+    <!--HTML Code-->
+      <div class="topnav">
+        <a href="#" class="img"><img src="profilepic.jpg" width="45" height="45"></a>
+        <a href="profile.html">PROFILE</a>
+        <a href="timetable.html">TIME TABLE</a>
+        <a href="attendance.html" class="#">ATTENDANCE</a>
+        <a class="active" href="calender.html">CALENDER</a>
+        
+      </div>
+
+
+    <div class="calendar">
+        <div class="header">
+          <button class="prev" onclick="prevMonth()">&#10094;</button>
+          <div class="month-year" id="month-year"></div>
+          <button class="next" onclick="nextMonth()">&#10095;</button>
+        </div>
+        <div class="weekdays">
+          <div>Sun</div>
+          <div>Mon</div>
+          <div>Tue</div>
+          <div>Wed</div>
+          <div>Thu</div>
+          <div>Fri</div>
+          <div>Sat</div>
+        </div>
+        <div class="days" id="days"></div>
+      </div>
+      
+    <script>
+      let today = new Date();
+      let currentMonth = today.getMonth();
+      let currentYear = today.getFullYear();
+
+      const monthNames = ["January", "February", "March", "April", "May", "June",
+        "July", "August", "September", "October", "November", "December"
+      ];
+
+      const holidays = [
+        {date: new Date("2023-01-01"), reason: "New Year's Day"}, 
+        {date: new Date("2023-01-26"), reason: "Republic Day"},
+        {date: new Date("2023-03-29"), reason: "Holi"},
+        {date: new Date("2023-04-14"), reason: "Tamil New Year"},
+        {date: new Date("2023-05-01"), reason: "Labour Day"},
+        {date: new Date("2023-10-02"), reason: "Gandhi Jayanti"},
+        {date: new Date("2023-10-19"), reason: "Diwali"},
+        {date: new Date("2023-12-25"), reason: "Christmas Day"},
+      ];
+
+      function showCalendar(month, year) {
+        let firstDay = (new Date(year, month)).getDay();
+        let daysInMonth = 32 - new Date(year, month, 32).getDate();
+
+        let days = document.getElementById("days");
+        days.innerHTML = "";
+
+        let monthYear = document.getElementById("month-year");
+        monthYear.innerHTML = monthNames[month] + " " + year;
+
+        for (let i = 0; i < firstDay; i++) {
+          let div = document.createElement("div");
+          div.classList.add("empty");
+          days.appendChild(div);
+        }
+
+        for (let i = 1; i <= daysInMonth; i++) {
+          let div = document.createElement("div");
+          div.innerHTML = i;
+          if (i === today.getDate() && year === today.getFullYear() && month === today.getMonth()) {
+            div.classList.add("today");
+          }
+          for (let j = 0; j < holidays.length; j++) {
+            if (holidays[j].date.getDate() === i && holidays[j].date.getMonth() === month && holidays[j].date.getFullYear() === year) {
+              div.classList.add("holiday");
+              div.setAttribute("title", holidays[j].reason); // add tooltip with the holiday reason
+            }
+          }
+          if (i % 2 === 0) {
+            div.classList.add("even");
+          }
+          else {
+            div.classList.add("odd");
+          }
+          days.appendChild(div);
+        }
+      }
+
+      showCalendar(currentMonth, currentYear);
+
+
+      function prevMonth() {
+        currentYear = (currentMonth === 0) ? currentYear - 1 : currentYear;
+        currentMonth = (currentMonth === 0) ? 11 : currentMonth - 1;
+        showCalendar(currentMonth, currentYear);
+      }
+
+      function nextMonth() {
+        currentYear = (currentMonth === 11) ? currentYear + 1 : currentYear;
+        currentMonth = (currentMonth + 1) % 12;
+        showCalendar(currentMonth, currentYear);
+      }
+
+    </script>
+</body>
+</html>
